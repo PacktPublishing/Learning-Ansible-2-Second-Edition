@@ -1,0 +1,242 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Learning Ansible 2 Second Edition by PacktPublishing</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Learning Ansible 2 Second Edition</h1>
+        <p>This is the code repository for Learning Ansible 2 Second Edition, published by Packt.</p>
+
+        <p class="view"><a href="https://github.com/PacktPublishing/Learning-Ansible-2-Second-Edition">View the Project on GitHub <small>PacktPublishing/Learning-Ansible-2-Second-Edition</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/PacktPublishing/Learning-Ansible-2-Second-Edition/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/PacktPublishing/Learning-Ansible-2-Second-Edition/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/PacktPublishing/Learning-Ansible-2-Second-Edition">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="devops-for-web-development" class="anchor" href="#devops-for-web-development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DevOps for Web Development</h1>
+
+<p>This is the code repository for <a href="https://www.packtpub.com/networking-and-servers/devops-web-development?utm_source=github&amp;utm_medium=repository&amp;utm_content=9781786465702">DevOps for Web Development</a>, published by Packt. It contains all the supporting project files necessary to work through the book from start to finish.</p>
+
+<h2>
+<a id="instructions-and-navigation" class="anchor" href="#instructions-and-navigation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Instructions and Navigation</h2>
+
+<p>All of the code is organized into folders. Each folder starts with a number followed by the application name. For example, <code>Chapter 2</code>. </p>
+
+<p>Code Snippet:</p>
+
+<pre><code> &lt;properties&gt;
+        &lt;jpa.database&gt;MYSQL&lt;/jpa.database&gt;
+        &lt;jdbc.driverClassName&gt;com.mysql.jdbc.Driver&lt;/jdbc.driverClassName&gt;
+        &lt;jdbc.url&gt;jdbc:mysql://localhost:3306/petclinic?useUnicode=true&lt;/jdbc.url&gt;
+        &lt;jdbc.username&gt;root&lt;/jdbc.username&gt;
+        &lt;jdbc.password&gt;petclinic&lt;/jdbc.password&gt;
+    &lt;/properties&gt;
+</code></pre>
+
+<h3>
+<a id="chapter-1" class="anchor" href="#chapter-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapter 1:</h3>
+
+<p>You can find all the necessary code <strong><a href="https://github.com/spring-projects/spring-petclinic">here</a></strong> for the chapter 1.</p>
+
+<h3>
+<a id="chapter-2" class="anchor" href="#chapter-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapter 2:</h3>
+
+<pre><code>java -jar jenkins.war --httpPort=9999
+java -jar jenkins.war --httpsPort=8888
+java -jar slave.jar -jnlpUrl http://192.168.1.34:8080/computer/TestServer/slave-agent.jnlp -secret 65464e02c58c85b192883f7848ad2758408220bed2f3af715c01c9b01cb72f9b
+</code></pre>
+
+<p><strong>Sonar.properties</strong>
+*Required metadata *</p>
+
+<pre><code>sonar.projectKey=java-sonar-runner-simple 
+sonar.projectName=Simple Java project analyzed with the SonarQube Runner 
+sonar.projectVersion=1.0
+</code></pre>
+
+<p><strong>Comma-separated paths to directories with sources (required)</strong>
+<code>onar.sources=src</code></p>
+
+<p><strong>Language</strong>
+<code>sonar.language=java</code>
+*<em>Encoding of the source files *</em>
+<code>sonar.sourceEncoding=UTF-8</code></p>
+
+<h3>
+<a id="chapter-3" class="anchor" href="#chapter-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapter 3:</h3>
+
+<pre><code>echo 'Hello from Pipeline Demo'
+stage 'Compile'
+build 'PetClinic-Compile'
+stage 'Test'
+build 'PetClinic-Test'
+</code></pre>
+
+<hr>
+
+<pre><code>echo 'Hello from Pipeline Demo'
+stage 'Compile'
+node {
+  git url: 'https://github.com/mitesh51/spring-petclinic.git'
+  def mvnHome = tool 'Maven3.3.1'
+  sh "${mvnHome}/bin/mvn -B compile"
+}
+stage 'Test'
+node('WindowsNode') {
+  git url: 'https://github.com/mitesh51/spring-petclinic.git'
+  def mvnHome = tool 'WindowsMaven'
+  bat "${mvnHome}\\bin\\mvn -B verify"
+  step([$class: 'ArtifactArchiver', artifacts: '**/target/*.war', fingerprint: true])  
+  step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+}
+</code></pre>
+
+<hr>
+
+<pre><code>Create a user with name admin and assign password and roles as below. 
+&lt;role rolename="manager-gui"/&gt;
+&lt;role rolename="manager-script"/&gt;
+&lt;user username="admin" password="cloud@123" roles="manager-script" /&gt;
+Now, we need to add Tomcat's admin user that we created in the Maven setting file.
+&lt;servers&gt;
+&lt;server&gt;
+  &lt;id&gt;tomcat-development-server&lt;/id&gt;
+  &lt;username&gt;admin&lt;/username&gt;
+  &lt;password&gt;password&lt;/password&gt;
+&lt;/server&gt;
+&lt;/servers&gt;
+</code></pre>
+
+<hr>
+
+<p>Find <em>Tomcat</em> Plugin block in <code>Pom.xml</code> and add following details. Make sure that <strong>Server Name</strong> is same that we provided in <code>settings.xml</code> of Maven as <strong>Id</strong>:</p>
+
+<pre><code>&lt;plugin&gt;
+                &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+                &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.2&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;server&gt;tomcat-development-server&lt;/server&gt;
+            &lt;url&gt;http://192.168.1.35:9999/manager/text&lt;/url&gt;
+            &lt;warFile&gt;target\petclinic.war&lt;/warFile&gt;
+            &lt;path&gt;/petclinic&lt;/path&gt;
+                &lt;/configuration&gt;
+ &lt;/plugin&gt;
+</code></pre>
+
+<h3>
+<a id="chapter-4" class="anchor" href="#chapter-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapter 4:</h3>
+
+<pre><code>rpm -ivh chef-12.9.41-1.el6.x86_64.rpm 
+knife bootstrap 192.168.1.37 -x root -P cloud@123 -N tomcatserver
+knife node run_list add tomcatserver"role[vtomcat]"
+</code></pre>
+
+<h3>
+<a id="chapter-5" class="anchor" href="#chapter-5" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapter 5:</h3>
+
+<p><code>docker run -p 8180:8080 -d --name devopstomcat1devopstomcatnew</code></p>
+
+<h3>
+<a id="chapter-6" class="anchor" href="#chapter-6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapter 6:</h3>
+
+<pre><code>knife ec2 server create -I ami-1ecae776 -f t2.micro -N DevOpsVMonAWS --aws-access-key-id '&lt; Your Access Key ID &gt;' --aws-secret-access-key '&lt; Your Secret Access Key &gt;' -S book --identity-file book.pem --ssh-user ec2-user -r role[v-tomcat]
+</code></pre>
+
+<hr>
+
+<pre><code>knife azure server create --azure-dns-name 'distechnodemo' --azure-vm-name 'dtserver02' --azure-vm-size 'Small' -N DevOpsVMonAzure2 --azure-storage-account 'classicstorage9883' --bootstrap-protocol 'cloud-api' --azure-source-image '5112500ae3b842c8b9c604889f8753c3__OpenLogic-CentOS-67-20160310' --azure-service-location 'Central US' --ssh-user 'dtechno' --ssh-password 'cloud@321' -r role[v-tomcat] --ssh-port 22
+</code></pre>
+
+<h3>
+<a id="chapter-7" class="anchor" href="#chapter-7" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapter 7:</h3>
+
+<p><strong><em>FROM tomcat:8.0</em></strong></p>
+
+<p><strong>MAINTAINER</strong> <code>Mitesh&lt;YourEmailID@domain.com&gt;</code></p>
+
+<p><strong>COPY</strong>  <code>tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml</code></p>
+
+<h3>
+<a id="chapter-8" class="anchor" href="#chapter-8" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapter 8:</h3>
+
+<p><code>java -jar newrelic.jar install</code></p>
+
+<h3>
+<a id="chapter-9" class="anchor" href="#chapter-9" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapter 9:</h3>
+
+<pre><code>ssh -t -t root@192.168.1.36 "ifconfig; rvm use 2.1.0; knife ec2 server create -I ami-1ecae776 -f t2.micro -N DevOpsVMonAWS1 --aws-access-key-id '&lt;YOUR ACCESS KEY ID&gt;' --aws-secret-access-key '&lt;YOUR SECRET ACCESS KEY&gt;' -S book --identity-file book.pem --ssh-user ec2-user -r role[v-tomcat]"
+</code></pre>
+
+<hr>
+
+<pre><code>ssh -t -t root@192.168.1.36 "ifconfig; rvm use 2.1.0; knife ec2 server create -I ami-1ecae776 -f t2.micro -N DevOpsVMonAWS1 --aws-access-key-id '&lt;YOUR ACCESS KEY ID&gt;' --aws-secret-access-key '&lt;YOUR SECRET ACCESS KEY&gt;' -S book --identity-file book.pem --ssh-user ec2-user -r role[v-tomcat]"
+</code></pre>
+
+<hr>
+
+<pre><code>java -jar slave.jar -jnlpUrl http://192.168.1.35:8080/computer/TestServer/slave-agent.jnlp -secret 65464e02c58c85b192883f7848ad2758408220bed2f3af715c01c9b01cb72f9b
+</code></pre>
+
+<hr>
+
+<pre><code>ssh  -i /home/mitesh/book.pem -o StrictHostKeyChecking=no -t -t ec2-user@ec2-52-90-116-36.compute-1.amazonaws.com "sudo usermod -a -G tomcat ec2-user; sudo chmod -R g+w /var/lib/tomcat6/webapps; sudo service tomcat6 stop;" 
+scp  -i /home/mitesh/book.pem /home/mitesh/target/*.war ec2-user@ec2-52-90-116-36.compute-1.amazonaws.com:/var/lib/tomcat6/webapps
+ssh  -i /home/mitesh/book.pem -o StrictHostKeyChecking=no -t -t ec2-user@ec2-52-90-116-36.compute-1.amazonaws.com "sudo service tomcat6 start"
+</code></pre>
+
+<hr>
+
+<pre><code>node('Master') {
+   // Mark the code checkout 'stage'
+   stage 'Checkout'
+
+   // Get code for PetClinic Application from a GitHub repository
+   git url: 'https://github.com/mitesh51/spring-petclinic.git'
+
+   // Get the maven tool.
+   // This ' Maven3.3.1' maven tool must be configured in the global  configuration.           
+   def mvnHome = tool 'Maven3.3.1'
+
+   // Mark the code Compile 'stage'....
+   stage 'Compile'
+   // Run the maven build
+   sh "${mvnHome}/bin/mvn clean compile"
+
+   // Mark the code for Unit test execution and package 'stage'....
+   stage 'Test&amp;Package'
+   sh "${mvnHome}/bin/mvn clean package"
+
+   // Mark the code Cloud provisioning 'stage' where instance is allocated in Amazon EC2
+// Once Instance is available, Chef will be used for Configuration Management
+// knife ec2 plugin will be used for instance provisioning in the AWS cloud
+   stage 'Cloud Provisioning'
+   sh "ssh -t -t root@192.168.1.39 'ifconfig; rvm use 2.1.0; knife ec2 server create -I ami-1ecae776 -f t2.micro -N DevOpsVMonAWS9 --aws-access-key-id xxxxxxxxxxxxxxxxxxxx --aws-secret-access-key xxxxxxxxxxxxxxxxxxxxxxxxxxxxx -S book --identity-file book.pem --ssh-user ec2-user -r role[v-tomcat]'"
+}
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/PacktPublishing">PacktPublishing</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
