@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  vars:
+    user: root
+  tasks:
+  - name: 'Retrive {{ user }} data if it exists'
+    check_user_id:
+      user: '{{ user }}'
+    register: user_data
+  - name: 'Print user {{ user }} data'
+    debug:
+      msg: '{{ user_data }}'

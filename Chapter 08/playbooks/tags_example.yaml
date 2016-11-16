@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Ensure the file /tmp/ok exists
+    file:
+      name: /tmp/ok
+      state: touch
+    tags:
+    - file_present
+  - name: Ensure the file /tmp/ok does not exists
+    file:
+      name: /tmp/ok
+      state: absent
+    tags:
+    - file_absent

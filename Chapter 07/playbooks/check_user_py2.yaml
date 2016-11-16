@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  vars:
+    user_ok: root
+    user_ko: this_user_does_not_exists
+  tasks:
+  - name: 'Check if user {{ user_ok }} exists'
+    check_user_py2:
+      user: '{{ user_ok }}'
+  - name: 'Check if user {{ user_ko }} exists'
+    check_user_py2:
+      user: '{{ user_ko }}'

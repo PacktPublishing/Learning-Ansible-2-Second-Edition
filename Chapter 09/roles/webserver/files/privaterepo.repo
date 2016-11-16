@@ -1,0 +1,7 @@
+[privaterepo]
+name=Private repo that will keep our apps packages
+baseurl=http://repo.fale.io/
+skip_if_unavailable=True
+gpgcheck=0
+enabled=1
+enabled_metadata=1

@@ -1,0 +1,42 @@
+---
+- name: Verify if the current version of Java is installed
+  command: rpm -q jdk1.8.0_91-1.8.0_91-fcs
+  register: java
+  ignore_errors: True
+  changed_when: java|failed
+
+- name: Ensure that JavaSE is download
+  uri:
+    url: 'http://download.oracle.com/otn-pub/java/jdk/8u91-b14/jdk-8u91-linux-x64.rpm'
+    method: GET
+    HEADER_Cookie: 'gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie'
+    dest: /tmp
+    creates: /tmp/jdk-8u91-linux-x64.rpm
+  when: java|failed
+
+- name: Ensure JavaSE is installed
+  dnf:
+    name: /tmp/jdk-8u91-linux-x64.rpm
+    state: present
+  when: java|failed
+
+- name: Set alternatives for java
+  alternatives:
+    path: /usr/java/jdk1.8.0_91/jre/bin/java
+    name: java
+    link: /usr/bin/java
+  when: java|failed
+
+- name: Set alternatives for javac
+  alternatives:
+    path: /usr/java/jdk1.8.0_91/bin/javac
+    name: javac
+    link: /usr/bin/javac
+  when: java|failed
+
+- name: Set alternatives for javaws
+  alternatives:
+    path: /usr/java/jdk1.8.0_91/bin/javaws
+    name: javaws
+    link: /usr/bin/javaws
+  when: java|failed

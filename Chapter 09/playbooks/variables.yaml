@@ -1,0 +1,25 @@
+---
+- hosts: web
+  user: root
+  tasks:
+  - name: Print environment name
+    debug:
+      var: env
+  - name: Print db server url
+    debug:
+      var: db_url
+  - name: Print domain url
+    debug:
+      var: domain
+- hosts: db
+  user: root
+  tasks:
+  - name: Print environment name
+    debug:
+      var: env
+  - name: Print database username
+    debug:
+      var: db_user
+  - name: Parint database password
+    debug:
+      var: db_pass

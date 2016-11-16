@@ -1,0 +1,38 @@
+---
+- hosts: builders
+  user: ansible
+  tasks:
+  - name: Copy SPEC file to user folder
+    copy:
+      src: ../../spec/demo-php-app.spec
+      dest: /home/ansible
+  - name: Ensure rpmbuild exists
+    file:
+      name: ~/rpmbuild
+      state: directory
+  - name: Ensure rpmbuild/SOURCES exists
+    file:
+      name: ~/rpmbuild/SOURCES
+      state: directory
+  - name: Download the sources
+    command: spectool -R -g demo-php-app.spec
+  - name: Ensure no SRPM files are present
+    command: rm -f ~/rpmbuild/SRPMS/*
+  - name: Build the SRPM file
+    command: rpmbuild -bs demo-php-app.spec
+  - name: Execute mock
+    shell: mock ~/rpmbuild/SRPMS/*
+  - name: Copy the arch binaries in the repo path
+    shell: cp -f /var/lib/mock/epel-7-x86_64/result/*.x86_64.rpm /var/www/repo
+  - name: Recreate the repo metadata
+    command: createrepo --database /var/www/repo
+- hosts: web
+  user: ansible
+  tasks:
+  - name: Ensure last version of demo-php-app is present
+    yum:
+      state: latest
+      update_cache: True
+      disable_gpg_check: True
+      name: demo-php-app
+    become: True

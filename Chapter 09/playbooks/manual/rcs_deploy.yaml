@@ -1,0 +1,9 @@
+---
+- hosts: web
+  user: ansible
+  tasks:
+  - name: Install or update website
+    git:
+      repo: https://github.com/Fale/demo-php-app.git
+      dest: /var/www/application
+    become: True

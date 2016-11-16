@@ -1,0 +1,5 @@
+---
+env: production
+domain: fale.io
+db_url: db.fale.io
+db_pass: this_is_a_safe_password

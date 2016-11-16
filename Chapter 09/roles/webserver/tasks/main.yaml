@@ -1,0 +1,38 @@
+---
+- name: Ensure the HTTPd package is installed
+  yum:
+    name: httpd
+    state: present
+  become: True
+- name: Ensure needed tools are installed
+  yum:
+    name: '{{ item }}'
+    state: present
+  become: True
+  with_items:
+  - git
+  - php
+- name: Ensure the HTTPd service is enabled and running
+  service:
+    name: httpd
+    state: started
+    enabled: True
+  become: True
+- name: Ensure HTTP can pass the firewall
+  firewalld:
+    service: http
+    state: enabled
+    permanent: True
+    immediate: True
+  become: True
+- name: Ensure HTTPd configuration is updated
+  copy:
+    src: website.conf
+    dest: /etc/httpd/conf.d
+  become: True
+  notify: Restart HTTPd
+- name: Install our private repository
+  copy:
+    src: privaterepo.repo
+    dest: /etc/yum.repos.d/privaterepo.repo
+  become: True

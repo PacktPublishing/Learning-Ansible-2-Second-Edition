@@ -1,0 +1,5 @@
+---
+- hosts: j01.fale.io
+  user: root
+  roles:
+  - java

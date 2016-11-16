@@ -1,0 +1,58 @@
+---
+- name: Ensure EPEL is enabled
+  yum:
+    name: epel-release
+    state: present
+  become: True
+- name: Ensure needed packages are present
+  yum:
+    name: '{{ item }}'
+    state: present
+  become: True
+  with_items:
+  - libsemanage-python
+  - libselinux-python
+  - ntp
+  - firewalld
+- name: Ensure we have last version of every package
+  yum:
+    name: "*"
+    state: latest
+  become: True
+- name: Ensure the timezone is set to UTC
+  file:
+    src: /usr/share/zoneinfo/GMT
+    dest: /etc/localtime
+    state: link
+  become: True
+- name: Ensure the NTP service is running and enabled
+  service:
+    name: ntpd
+    state: started
+    enabled: True
+  become: True
+- name: Ensure FirewallD is running
+  service:
+    name: firewalld
+    state: started
+    enabled: True
+  become: True
+- name: Ensure SSH can pass the firewall
+  firewalld:
+    service: ssh
+    state: enabled
+    permanent: True
+    immediate: True
+  become: True
+- name: Ensure the MOTD file is present and updated
+  template:
+    src: motd
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0644
+  become: True
+- name: Ensure the hostname is the same of the inventory
+  hostname:
+    name: "{{ inventory_hostname }}"
+  become: True

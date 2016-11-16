@@ -1,0 +1,10 @@
+[web]
+ws01.stage.fale.io
+ws02.stage.fale.io
+
+[db]
+db01.stage.fale.io
+
+[staging:children]
+db
+web

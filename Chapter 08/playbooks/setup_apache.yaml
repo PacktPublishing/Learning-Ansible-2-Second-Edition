@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Ensure Apache is installed
+    yum:
+      name: httpd
+      state: present
+  - name: Ensure Apache in enabled
+    service:
+      name: httpd
+      state: running
+      enabled: True
+  - name: Ensure Apache userdirs are properly configured
+    template:
+      src: '../templates/userdir.conf'
+      dest: '/etc/httpd/conf.d/userdir.conf'

@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  tasks:
+  - name: List files in /tmp
+    command: ls /tmp
+    register: list_files
+  - name: Check if file testfile.txt exists
+    assert:
+      that:
+      - "'testfile.txt' in list_files.stdout_lines"

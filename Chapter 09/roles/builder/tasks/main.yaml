@@ -1,0 +1,50 @@
+---
+- name: Ensure needed packages are present
+  yum:
+    name: '{{ item }}'
+    state: present
+  become: True
+  with_items:
+  - mock
+  - rpm-build
+  - spectool
+  - createrepo
+  - httpd
+
+- name: Ensure the user ansible is in the mock group
+  user:
+    name: ansible
+    groups: mock
+    append: True
+  become: True
+
+- name: Ensure the /var/www/repo folder is present
+  file:
+    name: /var/www/repo
+    state: directory
+    group: ansible
+    owner: ansible
+    mode: 0755
+  become: True
+
+- name: Ensure the HTTPd zone for the repo is present
+  copy:
+    src: repo.conf
+    dest: /etc/httpd/conf.d/repo.conf
+  become: True
+  notify: Restart HTTPd
+
+- name: Ensure the HTTPd service is enabled and running
+  service:
+    name: httpd
+    state: started
+    enabled: True
+  become: True
+
+- name: Ensure HTTP can pass the firewall
+  firewalld:
+    service: http
+    state: enabled
+    permanent: True
+    immediate: True
+  become: True
