@@ -1,0 +1,13 @@
+---
+- hosts: all
+  remote_user: fale
+  tasks:
+  - yum:
+      name: httpd
+      state: present
+    become: True
+  - service:
+      name: httpd
+      state: started
+      enabled: True
+    become: True

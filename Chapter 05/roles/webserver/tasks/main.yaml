@@ -1,0 +1,33 @@
+---
+- name: Ensure the HTTPd package is installed
+  yum:
+    name: httpd
+    state: present
+  become: True
+- name: Ensure the HTTPd service is enabled and running
+  service:
+    name: httpd
+    state: started
+    enabled: True
+  become: True
+- name: Ensure HTTP can pass the firewall
+  firewalld:
+    service: http
+    state: enabled
+    permanent: True
+    immediate: True
+  become: True
+- name: Ensure HTTPd configuration is updated
+  copy:
+    src: website.conf
+    dest: /etc/httpd/conf.d
+  become: True
+  notify: Restart HTTPd
+- name: Ensure the website is present and updated
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0644
+  become: True

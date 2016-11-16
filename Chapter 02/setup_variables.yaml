@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: fale
+  tasks:
+  - name: Print OS and version
+    debug:
+      msg: '{{ ansible_distribution }} {{ ansible_distribution_version }}'
+    

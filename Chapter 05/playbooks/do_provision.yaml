@@ -1,0 +1,39 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Ensure domain is presemt
+    digital_ocean_domain:
+      api_token: 7e711fda00fe3cb7c587dcdead869b5074c4c0ea32ac0818ce901af59d09bf6f
+      state: present
+      name: do.fale.io
+      ip: 127.0.0.1
+  - name: Add the SSH Key to Digital Ocean
+    digital_ocean:
+      state: present
+      command: ssh
+      name: faleKey
+      ssh_pub_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCQiNk2aenh+lRsEY9mV9774jK77TRlDyserwRvv12dHcof2okUOaF2YQH2MnTtgxakjaxxwqeI3di66osa95dhHsujhFueLkZpzteNsafaDE/Da4jC9sPmYSAlpS6VneHIzEqGAOTWjShMyKaMByg0i0Jdte/NJQbpvbSSb7wqDWx/ByzSNElxJO9HL+XL/ythHXI1NylQ3Fjr8dtFnXU3n8kp9/aIt9Kqzum27avQ0ePpS5YE2x7bXaFl2qHYvOxN/dVF8KdQfJP7vBX1Qv0s9b2SOP08+EQHmNetaYcHobo8GSWo5xBM51Ar1gBu+8ON72C6y4r0HdzCCGkteZeiIYEKFjkjISeDElywmir58WsZYtJiYVlwjSAVUrNWCjjJziMIrGw70Md+w/oFw2VEQQGJIMxTzIL8necRXBxLE5WMnRLRqHmh+vkkZOP6CnI1YU+jsT/FTW4/KMKZ8tszeCW7EDaTGCTy+skzMko++fDQDUEN3D2w+zByMP/UShf+lVp2XNYHYbsZIO6cR2HRJYEjtE9y+WWgrTS8TnFJWhNseScKIomOuaN0eJGjuuqGyMoaDoUA1zkuc103AW8UTVaWJW+8pZKgOltrYrfgLCQB6D7EEunPjYs9qaAh7Y02VJKbRcoBqSBlxajILVd2gdUQkQxIX9ynRxHDqmMuQ=='
+      api_token: 7e711fda00fe3cb7c587dcdead869b5074c4c0ea32ac0818ce901af59d09bf6f
+    register: ssh_key
+  - name: Ensure the ws and db servers are present
+    digital_ocean:
+      state: present
+      ssh_key_ids: '{{ ssh_key.ssh_key.id }}'
+      name: '{{ item }}'
+      api_token: 7e711fda00fe3cb7c587dcdead869b5074c4c0ea32ac0818ce901af59d09bf6f
+      size_id: 512mb
+      region_id: lon1
+      image_id: centos-7-0-x64
+      unique_name: True
+    with_items:
+    - ws01.do.fale.io
+    - ws02.do.fale.io
+    - db01.do.fale.io
+    register: droplets
+  - name: Ensure domain resolve properly
+    digital_ocean_domain:
+      api_token: 7e711fda00fe3cb7c587dcdead869b5074c4c0ea32ac0818ce901af59d09bf6f
+      state: present
+      name: '{{ item.droplet.name }}'
+      ip: '{{ item.droplet.ip_address }}'
+    with_items: '{{ droplets.results }}'

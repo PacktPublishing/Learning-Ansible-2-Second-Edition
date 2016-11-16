@@ -1,0 +1,16 @@
+---
+- hosts: all
+  remote_user: ansible
+  vars:
+    backup: True
+  tasks:
+  - name: Check if the backup_folder is set
+    fail:
+      msg: 'The backup_folder needs to be set, please add: --extra-vars "backup_folder=FOLDER"'
+    when: backup_folder is not defined
+  - name: Copy the crontab in tmp if the backup variable is true
+    copy:
+      src: /etc/crontab
+      dest: '{{ backup_folder }}/crontab'
+      remote_src: True
+    when: backup

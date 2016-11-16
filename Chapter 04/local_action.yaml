@@ -1,0 +1,16 @@
+---
+- hosts: database
+  remote_user: ansible
+  tasks:
+  - name: Count processes running on the remote system
+    shell: ps | wc -l
+    register: remote_processes_number
+  - name: Print remote running processes
+    debug:
+      msg: '{{ remote_processes_number.stdout }}'
+  - name: Count processes running on the local system
+    local_action: shell ps | wc -l
+    register: local_processes_number
+  - name: Print local running processes
+    debug:
+      msg: '{{ local_processes_number.stdout }}'

@@ -1,0 +1,13 @@
+---
+- hosts: webserver
+  remote_user: ansible
+  tasks:
+  - name: Checking HTTPd service status
+    service:
+      name: httpd
+      state: running
+    register: httpd_result
+    ignore_errors: true
+  - debug:
+      msg: Previous task failed
+    when: httpd_result|failed

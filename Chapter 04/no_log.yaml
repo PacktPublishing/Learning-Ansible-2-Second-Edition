@@ -1,0 +1,4 @@
+- name: Running a script
+  shell: script.sh
+    password: my_password
+  no_log: True

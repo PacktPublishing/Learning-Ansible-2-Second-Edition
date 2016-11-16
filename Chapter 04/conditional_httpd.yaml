@@ -1,0 +1,19 @@
+---
+- hosts: webserver
+  remote_user: ansible
+  tasks:
+  - name: Print the ansible_os_family value
+    debug:
+      msg: '{{ ansible_os_family }}'
+  - name: Ensure the httpd package is updated
+    yum:
+      name: httpd
+      state: latest
+    become: True
+    when: ansible_os_family == 'RedHat'
+  - name: Ensure the apache2 package is updated
+    apt:
+      name: apache2
+      state: latest
+    become: True
+    when: ansible_os_family == 'Debian'

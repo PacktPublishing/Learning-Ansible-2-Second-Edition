@@ -1,0 +1,17 @@
+---
+- hosts: all
+  remote_user: ansible
+  tasks:
+  - name: Ensure the folder /tmp/iproute2 is present
+    file:
+      dest: '/tmp/iproute2'
+      state: directory
+    become: True
+  - name: Copy files that start with rt to the tmp folder
+    copy:
+      src: '{{ item }}'
+      dest: '/tmp/iproute2'
+      remote_src: True
+    become: True
+    with_fileglob:
+    - '/etc/iproute2/rt_*'

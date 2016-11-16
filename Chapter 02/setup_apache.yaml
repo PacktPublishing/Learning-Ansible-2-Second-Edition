@@ -1,0 +1,15 @@
+---
+- hosts: all
+  remote_user: fale
+  tasks:
+  - name: Ensure the HTTPd package is installed
+    yum:
+      name: httpd
+      state: present
+    become: True
+  - name: Ensure the HTTPd service is enabled and running
+    service:
+      name: httpd
+      state: started
+      enabled: True
+    become: True

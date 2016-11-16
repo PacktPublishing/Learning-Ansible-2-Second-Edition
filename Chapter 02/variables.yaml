@@ -1,0 +1,11 @@
+---
+- hosts: all
+  remote_user: fale
+  tasks:
+  - name: Set variable 'name'
+    set_fact:
+      name: Test machine
+  - name: Print variable 'name'
+    debug:
+      msg: '{{ name }}'
+    

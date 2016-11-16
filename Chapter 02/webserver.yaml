@@ -1,0 +1,29 @@
+---
+- hosts: all
+  remote_user: ansible
+  tasks:
+  - name: Ensure the HTTPd package is installed
+    yum:
+      name: httpd
+      state: present
+    become: True
+  - name: Ensure the HTTPd service is enabled and running
+    service:
+      name: httpd
+      state: started
+      enabled: True
+    become: True
+  - name: Ensure HTTP can pass the firewall
+    firewalld:
+      service: http
+      state: enabled
+      permanent: True
+      immediate: True
+    become: True
+  - name: Ensure HTTPS can pass the firewall
+    firewalld:
+      service: https
+      state: enabled
+      permanent: True
+      immediate: True
+    become: True

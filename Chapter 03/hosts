@@ -1,0 +1,5 @@
+[webserver]
+ws[01:02].fale.io
+
+[database]
+db01.fale.io

@@ -1,0 +1,25 @@
+---
+- hosts: all
+  remote_user: ansible
+  vars:
+    users:
+    - alice
+    - bob
+    folders:
+    - mail
+    - public_html
+  tasks:
+  - name: Ensure the users exist
+    user:
+      name: '{{ item }}'
+    become: True
+    with_items:
+    - '{{ users }}'
+  - name: Ensure the folders exist
+    file:
+      path: '/home/{{ item.0 }}/{{ item.1 }}'
+      state: directory
+    become: True
+    with_nested:
+    - '{{ users }}'
+    - '{{ folders }}'

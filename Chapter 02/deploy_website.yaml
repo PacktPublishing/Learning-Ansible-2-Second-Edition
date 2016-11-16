@@ -1,0 +1,12 @@
+---
+- hosts: all
+  remote_user: ansible
+  tasks:
+  - name: Ensure the website is present and updated
+    template:
+      src: index.html.j2
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+    become: True
